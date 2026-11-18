@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>{{TITLE}}</title>
+<style>
+:root{
+  --bg:#fbf5ea; --card:#fffdf8; --ink:#4a3426; --sub:#8a7564; --line:#ecdfcc; --soft:#f4ead9;
+  --accent:#6aa86b; --bean:#b5793f; --gold:#e6a93a; --warn-bg:#fff0d6; --warn:#8a5a00; --wait:#a99886;
+  --veil:rgba(251,245,234,.72);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1d1916; --card:#28221d; --ink:#f1e6d8; --sub:#b9a693; --line:#3d342c; --soft:#332b24;
+    --accent:#8fcf8f; --bean:#e0a46a; --gold:#f2c15c; --warn-bg:#3a2f18; --warn:#f0c46a; --wait:#857565;
+    --veil:rgba(29,25,22,.72);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1d1916; --card:#28221d; --ink:#f1e6d8; --sub:#b9a693; --line:#3d342c; --soft:#332b24;
+  --accent:#8fcf8f; --bean:#e0a46a; --gold:#f2c15c; --warn-bg:#3a2f18; --warn:#f0c46a; --wait:#857565;
+  --veil:rgba(29,25,22,.72);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+button{font:inherit;color:inherit}
+.wrap{max-width:1400px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 16px}
+h1{margin:0;font-size:28px;letter-spacing:.5px}
+.meta{color:var(--sub);font-size:13px}
+.badge{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--warn-bg);color:var(--warn);margin-left:8px;vertical-align:5px}
+.live{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--accent);color:#fff;margin-left:8px;vertical-align:5px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);margin:12px -16px 0;padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.bar::-webkit-scrollbar{display:none}
+.tab{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 18px;font-size:16px;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bean{display:inline-block;width:.8em;height:1em;vertical-align:-.12em;margin-right:2px}
+/* 班级目标 */
+.goals{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.gc{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.gc h2{margin:0;font-size:16px;color:var(--sub);font-weight:600}
+.gc .big{font-size:20px;font-weight:700}
+.prog{height:12px;border-radius:99px;background:var(--soft);overflow:hidden;position:relative}
+.prog i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.prog s{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--gold);border-radius:2px}
+.gc .t{font-size:15px;color:var(--sub)}
+.gc .ok{color:var(--accent);font-weight:650}
+.scenes{display:flex;gap:8px;flex-wrap:wrap}
+.scn{display:flex;align-items:center;gap:6px;font-size:14px;border:1.5px dashed var(--line);border-radius:12px;padding:3px 10px 3px 4px;color:var(--sub)}
+.scn.on{border-style:solid;border-color:var(--accent);color:var(--ink)}
+.scn img,.scn .sw{width:30px;height:30px;border-radius:8px;object-fit:cover;background:var(--soft)}
+.scn:not(.on) img{filter:grayscale(1);opacity:.45}
+.news{margin:12px 0 0;font-size:15px}
+.news span{display:inline-block;background:color-mix(in srgb,var(--gold) 24%,transparent);border-radius:8px;padding:2px 10px;margin:3px 6px 0 0}
+/* 宠物格子：后面是班级解锁的背景 */
+.field{margin-top:16px;border-radius:24px;padding:14px;background:var(--soft) center/cover no-repeat;position:relative}
+.field::before{content:"";position:absolute;inset:0;border-radius:24px;background:var(--veil)}
+.field.plain::before{display:none}
+.grid{position:relative;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.pet{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:8px 10px 12px;text-align:center;cursor:pointer;position:relative}
+.pet:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pet.new{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 45%,transparent)}
+.art{position:relative;aspect-ratio:1;width:100%;max-width:180px;margin:0 auto}
+.art .body{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2}
+.art .w{position:absolute;height:auto;z-index:3}
+.art .w.side{z-index:1;width:40%;left:-4%;bottom:0}
+.art .w.head{width:48%;left:26%;top:-6%}
+.art .w.hand{width:34%;right:-2%;bottom:2%}
+.art span.w{width:auto;font-size:11px;line-height:1.2;padding:2px 7px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);white-space:nowrap;max-width:60%;overflow:hidden;text-overflow:ellipsis}
+.art span.w.head{left:50%;transform:translateX(-50%);top:0}
+.nm{font-weight:700;font-size:18px;margin-top:2px}
+.sp{font-size:13px;color:var(--sub)}
+.money{font-size:14px;margin-top:2px}
+.money b{color:var(--bean)}
+.lv{height:7px;border-radius:99px;background:var(--soft);overflow:hidden;margin:7px 6px 4px}
+.lv i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.hint{font-size:12px;color:var(--sub)}
+.tag{display:inline-block;margin-top:5px;font-size:12px;border-radius:999px;padding:0 8px}
+.tag.wait{color:var(--wait);border:1px dashed var(--wait)}
+.tag.more{color:var(--bean);border:1px solid color-mix(in srgb,var(--bean) 50%,transparent)}
+.flag{position:absolute;top:8px;left:8px;font-size:12px;font-weight:650;background:var(--gold);color:#3a2a10;border-radius:999px;padding:1px 9px;z-index:4}
+/* 弹窗 */
+dialog{border:0;border-radius:22px;padding:0;max-width:640px;width:calc(100% - 32px);max-height:calc(100% - 32px);background:var(--card);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(40,25,15,.5)}
+.dl{padding:18px 20px 20px}
+.dh{display:flex;gap:16px;align-items:center}
+.dh .art{width:170px;flex:none;margin:0}
+.dh h2{margin:0;font-size:24px}
+.x{position:absolute;top:10px;right:12px;border:0;background:var(--soft);border-radius:999px;width:36px;height:36px;font-size:18px;cursor:pointer;z-index:5}
+.tabs2{display:flex;gap:6px;margin:16px 0 10px;border-bottom:1.5px solid var(--line)}
+.t2{border:0;background:none;padding:8px 12px;font-size:15px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px;color:var(--sub)}
+.t2[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:650}
+.slot{font-size:13px;color:var(--sub);margin:12px 0 6px}
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+.ware{border:1.5px solid var(--line);border-radius:14px;padding:6px 6px 8px;text-align:center;background:var(--card);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ware img,.ware .ph{width:64px;height:64px;object-fit:contain}
+.ware .ph{display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:12px;background:var(--soft);color:var(--sub);padding:4px}
+.ware .en{font-weight:650;font-size:14px;line-height:1.2}
+.ware .zh{font-size:12px;color:var(--sub)}
+.ware .pr{font-size:13px;color:var(--bean);font-weight:650}
+.ware.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--card))}
+.ware[aria-disabled="true"]{cursor:default;opacity:.55}
+.ware .u{font-size:11px;color:var(--sub)}
+.msg{min-height:1.4em;font-size:14px;margin:8px 0 0;color:var(--warn)}
+.msg.good{color:var(--accent)}
+.note{font-size:13px;color:var(--sub);background:var(--soft);border-radius:12px;padding:8px 12px;margin:0 0 6px}
+.log{font-size:14px;color:var(--sub);margin:0;padding-left:18px}
+.log b{color:var(--ink)}
+.undo{border:1px solid var(--line);background:var(--card);border-radius:999px;font-size:12px;padding:0 8px;margin-top:2px;cursor:pointer}
+footer{margin-top:28px;font-size:13px;color:var(--sub);line-height:1.8}
+.empty{padding:30px 0;color:var(--sub)}
+@media (max-width:640px){
+  h1{font-size:22px}
+  .goals{grid-template-columns:1fr}
+  .field{padding:8px;border-radius:18px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+  .nm{font-size:16px}
+  .dh{flex-direction:column;text-align:center}
+  .dh .art{width:150px}
+}
+</style>
+</head>
+<body>
+<script type="application/json" id="data">{{DATA}}</script>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>宠物墙<span id="demo"></span></h1>
+      <div class="meta" id="meta"></div>
+    </div>
+  </header>
+  <div class="bar" id="tabs" role="group" aria-label="选班级"></div>
+  <div class="goals" id="goals"></div>
+  <p class="news" id="news"></p>
+  <div class="field plain" id="field"><div class="grid" id="grid"></div></div>
+  <footer id="foot"></footer>
+</div>
+<dialog id="dlg" aria-label="宠物详情"><div class="dl" id="dl"></div></dialog>
+
+<script>
+const D = JSON.parse(document.getElementById("data").textContent);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STG = ["egg", "baby", "teen", "adult"];
+const SLOT = {head: "头上", hand: "手里", side: "身边"};
+const BEAN = `<svg class="bean" viewBox="0 0 16 20" aria-hidden="true"><path d="M8 1C3.5 1 1.5 5.5 2 10.5S5 19 8.5 19s6-3.8 5.5-9S12.5 1 8 1z" fill="var(--bean)"/><path d="M8.5 4.5c-1.6 2.2-1.6 8.8.2 11" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></svg>`;
+const img = f => D.images[f] || "";
+let cls = D.classes[0] || "", cur = null, tab = "wear";
+try { const s = localStorage.getItem("beike-pets"); if (s && D.classes.includes(s)) cls = s; } catch (e) {}
+
+// 没有图的时候用的占位画（卡皮巴拉轮廓）
+function placeholder(p) {
+  const sp = D.species[p.sp];
+  if (p.stage === 0) return `<svg class="body" viewBox="0 0 100 100" aria-hidden="true">
+    <ellipse cx="50" cy="55" rx="30" ry="37" fill="#fffaf0" stroke="#6b4a33" stroke-width="3"/>
+    <circle cx="39" cy="45" r="5" fill="${sp.color}" opacity=".6"/><circle cx="60" cy="38" r="3.5" fill="${sp.color}" opacity=".5"/>
+    <circle cx="58" cy="67" r="6" fill="${sp.color}" opacity=".55"/></svg>`;
+  const r = [0, 26, 31, 36][p.stage], cy = 58;
+  return `<svg class="body" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="${50 - r * .62}" cy="${cy - r * .78}" r="${r * .2}" fill="#9c6b48" stroke="#6b4a33" stroke-width="2.5"/>
+    <circle cx="${50 + r * .62}" cy="${cy - r * .78}" r="${r * .2}" fill="#9c6b48" stroke="#6b4a33" stroke-width="2.5"/>
+    <ellipse cx="50" cy="${cy}" rx="${r}" ry="${r * .95}" fill="${sp.color}" stroke="#6b4a33" stroke-width="3"/>
+    <ellipse cx="50" cy="${cy + r * .12}" rx="${r * .42}" ry="${r * .34}" fill="#b98a63"/>
+    <path d="M${50 - r * .5} ${cy - r * .25}h${r * .2}M${50 + r * .3} ${cy - r * .25}h${r * .2}" stroke="#4a3426" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="50" y="${cy - r * .45}" text-anchor="middle" font-size="${r * .38}" font-weight="800" fill="#fff" font-family="sans-serif">${esc(sp.kind.slice(0, 1))}</text></svg>`;
+}
+function own(p, id) { return p.own.find(o => o.id === id); }
+function draw(p) {
+  const sp = D.species[p.sp];
+  const f = p.stage === 0 ? `egg-${sp.en.toLowerCase()}.png` : `${sp.en.toLowerCase()}-${STG[p.stage]}.png`;
+  const body = img(f) ? `<img class="body" src="${img(f)}" alt="" loading="lazy">` : placeholder(p);
+  const items = p.stage === 0 ? "" : ["side", "head", "hand"].map(s => {
+    const it = p.wear[s] && own(p, p.wear[s]); if (!it) return "";
+    const u = img(`item-${it.id}.png`);
+    return u ? `<img class="w ${s}" src="${u}" alt="${esc(it.en)}" loading="lazy">` : `<span class="w ${s}">${esc(it.en)}</span>`;
+  }).join("");
+  return `<div class="art">${body}${items}</div>`;
+}
+const stageName = p => D.stages[p.stage];
+function hint(p) {
+  if (p.next == null) return "已经是完全体";
+  return `再挣 ${p.next - p.earned} 颗${p.stage === 0 ? "孵出来" : "长大"}`;
+}
+function pct(p) {
+  if (p.next == null) return 100;
+  const lo = D.thresholds[p.stage];
+  return Math.max(3, Math.round(100 * (p.earned - lo) / (p.next - lo)));
+}
+
+function goals() {
+  const g = D.goals.find(x => x.cls === cls), sc = D.scenes[cls];
+  let a = "", b = "";
+  if (g) a = `<div class="gc"><h2>${esc(g.unit)} · 全班交到九成，每人 +2</h2>
+      <div class="big">${esc(cls)} 交了 ${g.done} / ${g.total}</div>
+      <div class="prog" role="img" aria-label="交了 ${g.done} 人，目标 ${g.need} 人"><i style="width:${100 * g.done / Math.max(1, g.total)}%"></i><s style="left:${100 * g.need / Math.max(1, g.total)}%"></s></div>
+      <div class="t ${g.done >= g.need ? "ok" : ""}">${g.done >= g.need ? "到了！全班每人多 2 颗豆子" : `再有 ${g.need - g.done} 人交，全班每人多 2 颗`}</div></div>`;
+  if (sc) {
+    const top = D.scene_rules[D.scene_rules.length - 1].at, nx = sc.next;
+    b = `<div class="gc"><h2>全班一起挣豆子，解锁新场景</h2>
+      <div class="big">人均 ${sc.avg} 颗${nx ? ` · 再到人均 ${nx.at} 颗解锁${esc(nx.zh)}` : " · 全部解锁了"}</div>
+      ${nx ? `<div class="t">全班一起再挣 ${nx.need} 颗就到了</div>` : ""}
+      <div class="prog" role="img" aria-label="人均 ${sc.avg} 颗"><i style="width:${Math.min(100, 100 * sc.avg / top)}%"></i>${D.scene_rules.map(r => `<s style="left:calc(${100 * r.at / top}% - 3px)"></s>`).join("")}</div>
+      <div class="scenes">${D.scene_rules.map(r => { const on = sc.have.some(h => h.zh === r.zh), u = img(`scene-${r.en.replace(/[^a-z0-9]+/g, "-")}.png`);
+        return `<span class="scn ${on ? "on" : ""}">${u ? `<img src="${u}" alt="">` : `<span class="sw"></span>`}${esc(r.zh)} · 人均 ${r.at}</span>`; }).join("")}</div></div>`;
+  }
+  $("goals").innerHTML = a + b;
+  $("goals").style.display = a || b ? "" : "none";
+  const have = sc && sc.have.length ? sc.have[sc.have.length - 1] : null, u = have && img(`scene-${have.id}.png`);
+  $("field").style.backgroundImage = u ? `url("${u}")` : "";
+  $("field").classList.toggle("plain", !u);
+}
+
+function card(p) {
+  const more = !p.waiting && p.can && p.can[0] > 0 ? `<span class="tag more">${esc(p.can[1])}</span>` : "";
+  return `<button class="pet ${p.new ? "new" : ""}" data-k="${esc(p.key)}" aria-label="${esc(p.name)}的宠物，${esc(stageName(p))}，${p.balance} 颗豆子">
+    ${p.new ? `<span class="flag">${p.new === "hatched" ? "刚孵出来" : "刚长大"}</span>` : ""}
+    ${draw(p)}
+    <div class="nm">${esc(p.name)}</div>
+    <div class="sp">${p.stage === 0 ? "一颗蛋" : `${esc(D.species[p.sp].kind)}${esc(D.species[p.sp].zh)} · ${esc(stageName(p))}`}</div>
+    <div class="money">${BEAN}<b>${p.balance}</b> 颗能花</div>
+    <div class="lv" aria-hidden="true"><i style="width:${pct(p)}%"></i></div>
+    <div class="hint">${hint(p)}</div>
+    ${p.waiting ? `<span class="tag wait">在等你交 ${esc(p.waiting)}</span>` : more}
+  </button>`;
+}
+
+function render() {
+  document.querySelectorAll("#tabs .tab").forEach(b => b.setAttribute("aria-pressed", b.dataset.c === cls));
+  goals();
+  const list = D.pets.filter(p => p.cls === cls);
+  const h = list.filter(p => p.new === "hatched").map(p => p.name), gr = list.filter(p => p.new === "grew").map(p => p.name);
+  $("news").innerHTML = (h.length ? `<span>新孵出来：${esc(h.join("、"))}</span>` : "") + (gr.length ? `<span>长大了：${esc(gr.join("、"))}</span>` : "");
+  $("grid").innerHTML = list.map(card).join("") ||
+    `<p class="empty">${D.classes.length ? "这个班还没有学生。" : "还没有名单，也还没有人交作业。有名单以后，每个学生会先有一颗蛋。"}</p>`;
+}
+
+// ── 弹窗：装扮 / 小卖部 / 豆子怎么来 ───────────────
+function ware(it, p, mode) {
+  const u = img(`item-${it.id}.png`), had = own(p, it.id), on = p.wear[it.slot] === it.id;
+  let btm = "", dis = false;
+  if (mode === "shop") {
+    if (had) { btm = `<span class="zh">已经有了</span>`; dis = true; }
+    else if (p.stage === 0) { btm = `<span class="pr">${BEAN}${it.price}</span>`; dis = true; }
+    else if (p.balance < it.price) { btm = `<span class="pr">${BEAN}${it.price}</span><span class="zh">还差 ${it.price - p.balance} 颗</span>`; dis = true; }
+    else btm = `<span class="pr">${BEAN}${it.price}</span>`;
+    if (!D.live) dis = true;
+  } else {
+    btm = `<span class="zh">${on ? "戴着" : "点一下戴上"}</span><span class="u">${esc(it.from)}${it.reason ? "：" + esc(it.reason) : ""}</span>`;
+    if (!D.live) dis = true;
+  }
+  return `<div class="ware ${on && mode !== "shop" ? "on" : ""}" role="button" tabindex="${dis ? -1 : 0}" aria-disabled="${dis}" data-id="${esc(it.id)}" data-slot="${it.slot}" data-mode="${mode}">
+    ${u ? `<img src="${u}" alt="" loading="lazy">` : `<span class="ph">${esc(it.en)}</span>`}
+    <span class="en">${esc(it.en)}</span><span class="zh">${esc(it.zh)}${it.unit ? ` · ${esc(it.unit)}` : ""}</span>${btm}
+    ${mode === "wear" && D.live && it.from === "自己换的" ? `<button class="undo" data-undo="${esc(it.id)}">退回 ${it.paid} 颗</button>` : ""}
+  </div>`;
+}
+function bySlot(xs, f) {
+  return ["head", "hand", "side"].map(s => { const ys = xs.filter(x => x.slot === s); return ys.length ? `<div class="slot">${SLOT[s]}</div><div class="shop">${ys.map(f).join("")}</div>` : ""; }).join("");
+}
+function body(p) {
+  const ro = D.live ? "" : `<p class="note">这页是投屏快照，只能看。想让学生自己挑配饰，跟 WorkBuddy 说「开小卖部」。</p>`;
+  if (tab === "wear") return ro + (p.stage === 0 ? `<p class="note">蛋孵出来以后才能戴配饰。${esc(hint(p))}。</p>` :
+    p.own.length ? bySlot(p.own, it => ware(it, p, "wear")) + (D.live ? `<p class="note" style="margin-top:10px">再点一下戴着的那件就是摘下来。</p>` : "") :
+    `<p class="note">还没有配饰。去「小卖部」用豆子换一件吧。</p>`);
+  if (tab === "shop") return ro + `<p class="note">能花的豆子：${BEAN}<b>${p.balance}</b> 颗。花掉的豆子不影响长大。${p.can && p.can[0] > 0 ? esc(p.can[1]) + "。" : ""}</p>` +
+    bySlot(D.shop, it => ware(it, p, "shop"));
+  return `<p class="note">一共挣了 ${p.earned} 颗，换配饰花了 ${p.spent} 颗，还能花 ${p.balance} 颗。</p>
+    <ul class="log">${p.log.map(l => `<li><b>${esc(l.unit)}</b>：${l.got.map(g => `${esc(g.why)}${g.n ? ` +${g.n}` : ""}`).join("，")}</li>`).join("") || "<li>还没有。交一次作业就有。</li>"}</ul>`;
+}
+function openPet(key, keepTab) {
+  const p = D.pets.find(x => x.key === key), sp = D.species[p.sp];
+  cur = key; if (!keepTab) tab = p.stage === 0 ? "log" : (p.own.length ? "wear" : "shop");
+  $("dl").innerHTML = `<button class="x" id="x" aria-label="关掉">×</button>
+    <div class="dh">${draw(p)}<div>
+      <h2>${esc(p.name)}</h2>
+      <div class="sp">${esc(p.cls)}</div>
+      <div style="margin-top:6px">${p.stage === 0 ? "一颗蛋 · 里面是谁，孵出来才知道" : `<b>${esc(sp.kind)}${esc(sp.zh)}</b>（${esc(sp.en)}）· ${esc(stageName(p))}`}</div>
+      <div class="money" style="margin-top:4px">${BEAN}<b>${p.balance}</b> 颗能花 · 一共挣了 ${p.earned} 颗 · ${esc(hint(p))}</div></div></div>
+    <div class="tabs2" role="tablist">${[["wear", "装扮"], ["shop", "小卖部"], ["log", "豆子怎么来"]].map(([k, n]) =>
+      `<button class="t2" role="tab" data-t="${k}" aria-selected="${tab === k}">${n}</button>`).join("")}</div>
+    <div id="pane">${body(p)}</div><p class="msg" id="msg" aria-live="polite"></p>`;
+  if (!$("dlg").open) $("dlg").showModal();
+}
+async function act(what, payload) {
+  try {
+    const r = await fetch(D.live.api + what, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({key: cur, ...payload})});
+    const j = await r.json();
+    if (j.pet) { const i = D.pets.findIndex(x => x.key === cur); D.pets[i] = {...j.pet, new: D.pets[i].new}; }
+    if (j.scenes) D.scenes = j.scenes;
+    openPet(cur, true); render();
+    $("msg").className = "msg" + (j.error ? "" : " good");
+    $("msg").textContent = j.error || (what === "buy" ? "换好了，已经戴上！" : what === "refund" ? "退好了，豆子回来了。" : "好了。");
+  } catch (e) { $("msg").textContent = "小卖部好像关了。跟 WorkBuddy 说「开小卖部」再开一次。"; }
+}
+$("dl").addEventListener("click", e => {
+  if (e.target.closest("#x")) return $("dlg").close();
+  const t = e.target.closest(".t2"); if (t) { tab = t.dataset.t; openPet(cur, true); return; }
+  const u = e.target.closest("[data-undo]");
+  if (u) { e.stopPropagation(); if (confirm("退掉这件，豆子还给你？")) act("refund", {id: u.dataset.undo}); return; }
+  const w = e.target.closest(".ware"); if (!w || w.getAttribute("aria-disabled") === "true") return;
+  const p = D.pets.find(x => x.key === cur);
+  if (w.dataset.mode === "shop") act("buy", {id: w.dataset.id});
+  else act("wear", {slot: w.dataset.slot, id: p.wear[w.dataset.slot] === w.dataset.id ? "" : w.dataset.id});
+});
+$("dl").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("ware")) { e.preventDefault(); e.target.click(); } });
+
+const m = D.meta;
+if (m.demo) $("demo").innerHTML = '<span class="badge">演示数据 · 全是假名</span>';
+if (D.live) $("demo").innerHTML += '<span class="live">小卖部开着</span>';
+$("meta").textContent = `${m.generated} 用飞书成绩算的 · 只在这台电脑上`;
+$("tabs").innerHTML = D.classes.map(c => `<button class="tab" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+$("tabs").onclick = e => { const b = e.target.closest(".tab"); if (b) { cls = b.dataset.c; try { localStorage.setItem("beike-pets", cls); } catch (e) {} render(); } };
+$("grid").onclick = e => { const b = e.target.closest(".pet"); if (b) openPet(b.dataset.k); };
+$("dlg").onclick = e => { if (e.target === $("dlg")) $("dlg").close(); };
+const t = D.thresholds;
+$("foot").innerHTML = `豆子怎么来（每个单元算一次，看最近一次提交）：交了 +2 · 按对的题数最多 +6 · 重做后对的变多 +2 · 上单元的错词这次对了每个 +1（最多 5）· 造句写了 +1 · 全班交到九成每人 +2 · 老师送东西 +3。做得太快的那次不算豆子。<br>
+  长大看一共挣了多少：${D.stages.map((n, i) => `${n} ${t[i]}`).join(" → ")} 颗。换配饰花掉的豆子不影响长大。没交不扣豆子，宠物不会走。<br>
+  全班场景：人均挣到 ${D.scene_rules.map(r => `${r.at} 颗解锁${r.zh}`).join("、")}，全班的宠物一起换背景。<br>
+  ${D.live ? "小卖部开着：学生点自己的宠物 → 小卖部 → 挑配饰。" : "这页是快照，不连任何网站；想看最新的，跟 WorkBuddy 说「看看宠物」，想让学生挑配饰就说「开小卖部」。"}`;
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "_说明": "复制到 ~/.beike/config.json（或 $BEIKE_HOME/config.json）再改。base / table / base_url / form 一般由「beike.py 建表」自动写；last / last_pack / last_at / link 由「发」自动写，不用手填。以 _ 开头的键只是说明，程序不读。",
+  "base": "<成绩表所在多维表格的 base token>",
+  "table": "<成绩表的表 id，形如 tblXXXXXXXX>",
+  "base_url": "https://<你的飞书域名>/base/<base token>",
+  "form": "https://<你的飞书域名>/share/base/form/<表单分享 id>",
+  "demo_base": "<可选：演示用的假数据 base token，「看 --演示」和本地 review-api 用>",
+  "page_app": "<可选：妙搭全栈应用 id。有它和 page_url 时，「发」把学生页写进应用库>",
+  "page_url": "https://<你的租户>.feishuapp.com/app/<你的应用 id>/student-api/page",
+  "review_api": "https://<你的租户>.feishuapp.com/app/<你的应用 id>/student-api/review",
+  "学期": "2026秋",
+  "groups": ["<可选：收作业时只在这几个班群里搜结果码>"]
+}

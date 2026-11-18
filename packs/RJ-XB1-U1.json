@@ -1,0 +1,462 @@
+{
+  "packId": "RJ-XB1-U1-20261118",
+  "schema": "beike-pack/1",
+  "title": "Unit 1 People of Achievement",
+  "subtitle": "人教版 · 选择性必修第一册",
+  "source": {
+    "textbook": "人教版高中英语 选择性必修第一册",
+    "unit": "Unit 1 People of Achievement",
+    "from": "WorkBuddy 备课资料 / 课本词表",
+    "generatedBy": "beike-memory skill v1",
+    "generatedAt": "2026-11-17",
+    "note": "词表为课堂样例，老师可用自己手头版本的课本词表一键替换；玩法模板不变。"
+  },
+  "submit": {
+    "formUrl": "",
+    "fieldMap": {
+      "cls": "班级",
+      "student": "姓名",
+      "packId": "内容包",
+      "attempt": "第几次",
+      "right": "对了",
+      "shaky": "差一点",
+      "nope": "还不会",
+      "toTeacher": "待老师看",
+      "nopeList": "还不会清单",
+      "shakyList": "差一点清单",
+      "composeText": "造句原文",
+      "selfRating": "自评",
+      "durationSec": "用时秒",
+      "tooFast": "用时偏短",
+      "detail": "明细"
+    },
+    "note": "formUrl 留空时结算页只给结果码；填入飞书表单分享链接后，结算页生成预填链接，学生点一下就提交进表。fieldMap 的值必须和飞书表单里的问题名称一字不差。"
+  },
+  "episode": {
+    "title": "一株青蒿",
+    "tagline": "1969 年，一个没有名字的实验室，和 191 次失败。",
+    "media": "",
+    "mediaNote": "留空则用剧情卡演；老师也可以填本地视频文件名或班上学生爱看的剧集片段链接，玩法不变。",
+    "scenes": [
+      {
+        "id": "S1",
+        "label": "第 1 幕",
+        "time": "00:00–01:30",
+        "text": "北京，1969 年 1 月。39 岁的她接到一个任务：找到能治疟疾的药。实验室里没有空调，没有通风柜，只有 2000 多张古方抄纸。同事问她：这事做不成怎么办？她说：那就先做。",
+        "cliff": "她翻开的第一本书里写了什么？先过 6 个词，下一幕解锁。"
+      },
+      {
+        "id": "S2",
+        "label": "第 2 幕",
+        "time": "01:30–03:10",
+        "text": "《肘后备急方》里有一句：青蒿一握，以水二升渍，绞取汁，尽服之。她盯住了「绞取汁」三个字——不是煮，是冷取。前面 190 次失败，可能只是因为温度太高。",
+        "cliff": "她改了方法，然后把药用在了谁身上？填对情境里的空，继续看。"
+      },
+      {
+        "id": "S3",
+        "label": "第 3 幕",
+        "time": "03:10–05:00",
+        "text": "1972 年，第 191 号样本有效率 100%。但没人敢用在病人身上。她在申请书上写下自己的名字，成为第一个试药的人。住院一周，她活着出来了。",
+        "cliff": "用这一幕里的词，自己讲一句靠谱的话，才能看结局。"
+      },
+      {
+        "id": "S4",
+        "label": "第 4 幕",
+        "time": "05:00–06:40",
+        "text": "2015 年 10 月 5 日，斯德哥尔摩。诺贝尔生理学或医学奖。她在台上说：这不是我一个人的荣誉。青蒿素挽救的生命，已经超过 600 万。",
+        "cliff": "最后一关：把别人写错的句子改对，并说清为什么错。"
+      },
+      {
+        "id": "S5",
+        "label": "结局",
+        "time": "06:40–07:20",
+        "text": "她至今住在北京一套普通的房子里。墙上没有奖状。有人问她最想被记住什么，她说：青蒿素是中药给世界的一份礼物。",
+        "cliff": ""
+      }
+    ]
+  },
+  "levels": [
+    {
+      "id": "L1",
+      "sceneId": "S1",
+      "type": "flash",
+      "title": "闪认 · 看中文拼英文",
+      "pass": 5,
+      "items": [
+        "W-001",
+        "W-002",
+        "W-003",
+        "W-004",
+        "W-005",
+        "W-006"
+      ]
+    },
+    {
+      "id": "L2",
+      "sceneId": "S2",
+      "type": "cloze",
+      "title": "情境填空 · 把词放回剧情",
+      "pass": 3,
+      "items": [
+        "C-001",
+        "C-002",
+        "C-003",
+        "C-004"
+      ]
+    },
+    {
+      "id": "L3",
+      "sceneId": "S3",
+      "type": "compose",
+      "title": "造句 · 用这些词讲一句靠谱的话",
+      "pass": 2,
+      "items": [
+        "P-001",
+        "P-002"
+      ]
+    },
+    {
+      "id": "L4",
+      "sceneId": "S4",
+      "type": "fix",
+      "title": "改错 · 改对，并说清为什么",
+      "pass": 3,
+      "items": [
+        "E-001",
+        "E-002",
+        "E-003",
+        "E-004"
+      ]
+    },
+    {
+      "id": "L5",
+      "sceneId": "S5",
+      "type": "recall",
+      "title": "默写 · 作文里要能直接用的句子",
+      "pass": 2,
+      "items": [
+        "S-001",
+        "S-002",
+        "S-003"
+      ]
+    }
+  ],
+  "items": {
+    "W-001": {
+      "type": "word",
+      "zh": "成就；功绩",
+      "en": "achievement",
+      "accept": [
+        "achievement",
+        "achievements"
+      ],
+      "hint": "ach_______t"
+    },
+    "W-002": {
+      "type": "word",
+      "zh": "致力于；献身于",
+      "en": "devote to",
+      "accept": [
+        "devote to",
+        "devote oneself to",
+        "devote",
+        "dedicate to",
+        "dedicate oneself to"
+      ],
+      "hint": "d_____ to"
+    },
+    "W-003": {
+      "type": "word",
+      "zh": "内科医生",
+      "en": "physician",
+      "accept": [
+        "physician",
+        "physicians"
+      ],
+      "hint": "phy______n"
+    },
+    "W-004": {
+      "type": "word",
+      "zh": "疟疾",
+      "en": "malaria",
+      "accept": [
+        "malaria"
+      ],
+      "hint": "mal____a"
+    },
+    "W-005": {
+      "type": "word",
+      "zh": "提取；提取物",
+      "en": "extract",
+      "accept": [
+        "extract",
+        "extracts",
+        "extracted"
+      ],
+      "hint": "ex_____t"
+    },
+    "W-006": {
+      "type": "word",
+      "zh": "坚持说；坚决要求",
+      "en": "insist",
+      "accept": [
+        "insist",
+        "insists",
+        "insisted",
+        "insist on"
+      ],
+      "hint": "ins___"
+    },
+    "W-007": {
+      "type": "word",
+      "zh": "承认；致谢",
+      "en": "acknowledge",
+      "accept": [
+        "acknowledge",
+        "acknowledged",
+        "acknowledges"
+      ],
+      "hint": "ack________e"
+    },
+    "W-008": {
+      "type": "word",
+      "zh": "得出结论",
+      "en": "conclude",
+      "accept": [
+        "conclude",
+        "concluded",
+        "concludes"
+      ],
+      "hint": "con_____e"
+    },
+    "W-009": {
+      "type": "word",
+      "zh": "放弃；抛弃",
+      "en": "abandon",
+      "accept": [
+        "abandon",
+        "abandoned",
+        "abandons"
+      ],
+      "hint": "ab_____n"
+    },
+    "W-010": {
+      "type": "word",
+      "zh": "样本；抽样",
+      "en": "sample",
+      "accept": [
+        "sample",
+        "samples"
+      ],
+      "hint": "sa____"
+    },
+    "W-011": {
+      "type": "word",
+      "zh": "战胜；击败",
+      "en": "defeat",
+      "accept": [
+        "defeat",
+        "defeated",
+        "defeats"
+      ],
+      "hint": "de____t"
+    },
+    "W-012": {
+      "type": "word",
+      "zh": "获得；取得",
+      "en": "obtain",
+      "accept": [
+        "obtain",
+        "obtained",
+        "obtains"
+      ],
+      "hint": "ob____n"
+    },
+    "C-001": {
+      "type": "cloze",
+      "context": "In 1969, she was asked to ______ herself to finding a cure for malaria.",
+      "answer": "devote",
+      "accept": [
+        "devote"
+      ],
+      "options": [
+        "devote",
+        "defeat",
+        "abandon",
+        "obtain"
+      ],
+      "zh": "1969 年，她被要求致力于寻找治疗疟疾的方法。"
+    },
+    "C-002": {
+      "type": "cloze",
+      "context": "After 190 failures, she did not ______ the research.",
+      "answer": "abandon",
+      "accept": [
+        "abandon"
+      ],
+      "options": [
+        "abandon",
+        "acknowledge",
+        "insist",
+        "extract"
+      ],
+      "zh": "190 次失败之后，她没有放弃这项研究。"
+    },
+    "C-003": {
+      "type": "cloze",
+      "context": "She decided to ______ the plant with cool water instead of boiling it.",
+      "answer": "extract",
+      "accept": [
+        "extract"
+      ],
+      "options": [
+        "extract",
+        "conclude",
+        "defeat",
+        "devote"
+      ],
+      "zh": "她决定用冷水提取这种植物，而不是煮沸它。"
+    },
+    "C-004": {
+      "type": "cloze",
+      "context": "Sample No. 191 was finally able to ______ the disease.",
+      "answer": "defeat",
+      "accept": [
+        "defeat"
+      ],
+      "options": [
+        "defeat",
+        "insist",
+        "sample",
+        "physician"
+      ],
+      "zh": "第 191 号样本终于战胜了这种疾病。"
+    },
+    "P-001": {
+      "type": "compose",
+      "prompt": "用 devote 和 achievement，写一句关于屠呦呦的话。要靠谱——讲得通、说得对。",
+      "must": [
+        "devote",
+        "achievement"
+      ],
+      "minWords": 8,
+      "sample": "She devoted her whole life to medicine, and her achievement saved millions of people."
+    },
+    "P-002": {
+      "type": "compose",
+      "prompt": "用 insist 写一句话，说明一个人为什么会在 190 次失败后还继续。",
+      "must": [
+        "insist"
+      ],
+      "minWords": 8,
+      "sample": "She insisted on trying again because she believed the old book was right."
+    },
+    "E-001": {
+      "type": "fix",
+      "wrong": "He devote his life to science.",
+      "answer": "He devoted his life to science.",
+      "accept": [
+        "he devoted his life to science"
+      ],
+      "reason": "时态",
+      "reasons": [
+        "时态",
+        "词性",
+        "搭配",
+        "拼写"
+      ],
+      "zh": "他把一生献给了科学。"
+    },
+    "E-002": {
+      "type": "fix",
+      "wrong": "She has devoted herself in finding a new drug.",
+      "answer": "She has devoted herself to finding a new drug.",
+      "accept": [
+        "she has devoted herself to finding a new drug"
+      ],
+      "reason": "搭配",
+      "reasons": [
+        "时态",
+        "词性",
+        "搭配",
+        "拼写"
+      ],
+      "zh": "她致力于寻找一种新药。"
+    },
+    "E-003": {
+      "type": "fix",
+      "wrong": "Her achieve was acknowledged by the world.",
+      "answer": "Her achievement was acknowledged by the world.",
+      "accept": [
+        "her achievement was acknowledged by the world"
+      ],
+      "reason": "词性",
+      "reasons": [
+        "时态",
+        "词性",
+        "搭配",
+        "拼写"
+      ],
+      "zh": "她的成就得到了世界的承认。"
+    },
+    "E-004": {
+      "type": "fix",
+      "wrong": "The physican insisted to test the drug on himself.",
+      "answer": "The physician insisted on testing the drug on himself.",
+      "accept": [
+        "the physician insisted on testing the drug on himself"
+      ],
+      "reason": "拼写",
+      "reasons": [
+        "时态",
+        "词性",
+        "搭配",
+        "拼写"
+      ],
+      "zh": "这位内科医生坚持要在自己身上试药。"
+    },
+    "S-001": {
+      "type": "sentence",
+      "zh": "请默写：他把一生都奉献给了这项事业。",
+      "answer": "He devoted his whole life to the cause.",
+      "accept": [
+        "he devoted his whole life to the cause",
+        "he dedicated his whole life to the cause"
+      ],
+      "keys": [
+        "devoted",
+        "whole life",
+        "to"
+      ]
+    },
+    "S-002": {
+      "type": "sentence",
+      "zh": "请默写：她的成就得到了全世界的承认。",
+      "answer": "Her achievement was acknowledged all over the world.",
+      "accept": [
+        "her achievement was acknowledged all over the world",
+        "her achievements were acknowledged all over the world"
+      ],
+      "keys": [
+        "achievement",
+        "acknowledged"
+      ]
+    },
+    "S-003": {
+      "type": "sentence",
+      "zh": "请默写：在失败了很多次之后，他仍然坚持自己的想法。",
+      "answer": "After failing many times, he still insisted on his own idea.",
+      "accept": [
+        "after failing many times he still insisted on his own idea",
+        "after many failures he still insisted on his own idea"
+      ],
+      "keys": [
+        "insisted on",
+        "still"
+      ]
+    }
+  },
+  "cls": "",
+  "roster": [],
+  "rosterNote": "roster 非空时，开场页把输入框换成下拉菜单，学生从名单里选自己——没有错字也没有重名歧义。cls 由 publish.py --class 写死，或用链接 ?c= 带。"
+}

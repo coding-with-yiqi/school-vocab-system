@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>{{TITLE}}</title>
+<style>
+:root{
+  --bg:#f6f5f1; --card:#ffffff; --ink:#1f2328; --sub:#5b616b; --line:#e4e2dc; --soft:#efede7;
+  --ok:#2f9467; --near:#d99a1e; --no:#d2483f; --rev:#5b6fd0; --accent:#1f6f5c; --warn-bg:#fff4e0; --warn:#8a5a00;
+  --off:#9aa0a6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181b; --card:#1f2226; --ink:#e8e6e1; --sub:#a3a8ae; --line:#33373c; --soft:#272a2f;
+    --ok:#4cb987; --near:#e8b34a; --no:#ec6a60; --rev:#8796ea; --accent:#5fc3a6; --warn-bg:#3a2f18; --warn:#f0c46a; --off:#6c7177;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181b; --card:#1f2226; --ink:#e8e6e1; --sub:#a3a8ae; --line:#33373c; --soft:#272a2f;
+  --ok:#4cb987; --near:#e8b34a; --no:#ec6a60; --rev:#8796ea; --accent:#5fc3a6; --warn-bg:#3a2f18; --warn:#f0c46a; --off:#6c7177;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 16px;margin-bottom:14px}
+h1{font-size:22px;margin:0;letter-spacing:.5px}
+.meta{color:var(--sub);font-size:13px}
+.badge{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--warn-bg);color:var(--warn);margin-left:6px;vertical-align:2px}
+.bar-top{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0 10px;margin:0 -16px 6px;padding-left:16px;padding-right:16px;border-bottom:1px solid var(--line)}
+.row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.row::-webkit-scrollbar{display:none}
+.row+.row{margin-top:8px}
+.tab,.chip{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
+.tab small{color:var(--sub);margin-left:4px}
+.tab[aria-pressed="true"],.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab[aria-pressed="true"] small{color:inherit;opacity:.75}
+.chip{padding:4px 12px;font-size:13px}
+section{margin-top:22px;scroll-margin-top:150px}
+h2{font-size:17px;margin:0 0 4px}
+.lead{color:var(--sub);font-size:13px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.cls h3{margin:0;font-size:15px;display:flex;justify-content:space-between;align-items:baseline}
+.big{font-size:28px;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.big small{font-size:15px;color:var(--sub);font-weight:400}
+.prog{height:8px;border-radius:99px;background:var(--soft);overflow:hidden;margin:8px 0 10px}
+.prog i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.names{display:flex;flex-wrap:wrap;gap:6px}
+.name{font-size:13px;padding:2px 9px;border-radius:7px;background:var(--soft)}
+.name.miss{background:color-mix(in srgb,var(--no) 13%,transparent);color:var(--ink)}
+.allin{color:var(--ok);font-size:14px}
+.dim{opacity:.38}
+ol.wrong{list-style:none;margin:0;padding:0}
+ol.wrong li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+ol.wrong li:first-child{border-top:0}
+.rk{color:var(--sub);font-size:13px;font-variant-numeric:tabular-nums}
+.it{font-weight:600;overflow-wrap:anywhere}
+.it .zh{font-weight:400;color:var(--sub);font-size:13px;margin-left:6px}
+.it.nonword{font-weight:500;font-size:14px}
+.hbar{grid-column:2/4;display:flex;height:6px;border-radius:99px;overflow:hidden;background:var(--soft)}
+.hbar i{display:block;height:100%}
+.cnt{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cnt b{color:var(--ink);font-weight:600}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.att{list-style:none;margin:0;padding:0}
+.att li{padding:8px 0;border-top:1px solid var(--line);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.att li:first-child{border-top:0}
+.att .who{font-weight:600;min-width:6.5em}
+.att .who small{font-weight:400;color:var(--sub);margin-right:4px}
+.why{display:flex;flex-wrap:wrap;gap:6px}
+.why span{font-size:13px;padding:1px 8px;border-radius:7px;background:var(--soft)}
+.why span.hot{background:color-mix(in srgb,var(--no) 14%,transparent)}
+.note{font-size:13px;color:var(--sub);margin-top:10px}
+.check{display:flex;gap:8px;align-items:center;font-size:14px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--ok) 11%,transparent);margin-bottom:10px}
+.check.bad{background:var(--warn-bg);color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--sub);margin-bottom:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.tools select,.tools input{font:inherit;font-size:13px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+table.st{width:100%;border-collapse:collapse;font-size:14px}
+table.st th{font-weight:500;color:var(--sub);font-size:12px;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.st td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.st td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+table.st td:first-child{white-space:nowrap}
+.show-m{display:none}
+.stack{display:flex;height:16px;border-radius:5px;overflow:hidden;min-width:120px;background:var(--soft)}
+.stack i{display:block;height:100%;font-style:normal;font-size:11px;color:#fff;text-align:center;line-height:16px;overflow:hidden}
+.four{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap}
+.four b{font-weight:600}
+.tag{font-size:11px;padding:0 6px;border-radius:5px;background:var(--soft);color:var(--sub);margin-left:4px;white-space:nowrap}
+.tag.red{background:color-mix(in srgb,var(--no) 15%,transparent);color:var(--ink)}
+tr.missing td{color:var(--sub)}
+.up{color:var(--ok)} .down{color:var(--no)}
+.trend{width:100%;border-collapse:collapse;font-size:14px}
+.trend th,.trend td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.trend th{font-weight:500;color:var(--sub);font-size:12px}
+.mini{display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums;font-size:13px}
+.mini .prog{width:56px;height:6px;margin:0}
+.rec{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.rec .card{padding:12px 14px}
+.rec h4{margin:0 0 6px;font-size:15px}
+.rec h4 span{font-weight:400;color:var(--sub);font-size:13px;margin-left:6px}
+.flow{font-size:13px;color:var(--sub)}
+.flow b{color:var(--ink)}
+.soon{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.soon .card{border-style:dashed;background:transparent;color:var(--off)}
+.soon h3{margin:0 0 4px;font-size:15px;color:var(--sub)}
+.soon .pill{display:inline-block;font-size:12px;padding:1px 9px;border-radius:999px;border:1px solid var(--off);margin-left:6px;vertical-align:1px}
+.soon p{margin:0;font-size:13px}
+footer{margin-top:28px;font-size:12px;color:var(--sub);line-height:1.7}
+.empty{color:var(--sub);font-size:14px;padding:6px 0}
+.find{position:relative;margin-top:8px}
+.find input{width:100%;font:inherit;font-size:15px;padding:8px 12px 8px 34px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.find input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.find .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--sub);pointer-events:none;font-size:14px}
+.hits{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);list-style:none;margin:0;padding:4px;max-height:320px;overflow:auto;z-index:6}
+.hits li{padding:8px 10px;border-radius:7px;cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.hits li[aria-selected="true"],.hits li:hover{background:var(--soft)}
+.hits li small{color:var(--sub)}
+.one{border-color:var(--accent)}
+.one-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.one-h h2{margin:0}
+.one-h h2 small{font-weight:400;color:var(--sub);font-size:14px;margin-left:8px}
+.x{border:0;background:var(--soft);color:var(--ink);border-radius:999px;width:30px;height:30px;font-size:16px;cursor:pointer;flex:none}
+.ou{border-top:1px solid var(--line);padding:10px 0}
+.ou:first-of-type{border-top:0}
+.ou h4{margin:0 0 6px;font-size:14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.ou h4 span{font-weight:400;color:var(--sub);font-size:13px}
+.ou .stack{max-width:360px}
+.wl{font-size:13px;margin-top:6px;overflow-wrap:anywhere}
+.wl b{font-weight:600;margin-right:4px}
+@media (max-width:820px){
+  .grid3{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .soon{grid-template-columns:1fr}
+  h1{font-size:20px}
+  .hide-m{display:none}
+  table.st td,table.st th{padding:7px 4px}
+  .stack{min-width:72px}
+  .show-m{display:inline}
+  .tag{margin-left:2px}
+}
+.tab.off{color:var(--off);border-style:dashed}
+.tab.off[aria-pressed="true"]{background:var(--off);border-color:var(--off);color:var(--bg)}
+.tab .ok{color:var(--ok);margin-left:4px;font-size:12px}
+.tab[aria-pressed="true"] .ok{color:inherit}
+.st-pill{display:inline-block;font-size:12px;font-weight:400;padding:1px 9px;border-radius:999px;margin-left:6px;vertical-align:2px;background:var(--warn-bg);color:var(--warn)}
+.st-pill.yes{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.st-pill.off{background:var(--soft);color:var(--sub)}
+.wchips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.wchip{font-size:13px;padding:3px 10px;border-radius:8px;background:var(--soft)}
+.wchip small{color:var(--sub);margin-left:4px}
+.plan-who{font-size:13px;color:var(--sub);margin:4px 0 0;overflow-wrap:anywhere}
+.plan-who b{color:var(--ink);font-weight:600}
+.learn{border-top:1px solid var(--line);padding:10px 0 4px}
+.learn h4{margin:0 0 4px;font-size:14px}
+.learn .doing{list-style:none;margin:4px 0 0;padding:0;font-size:13px}
+.learn .doing li{padding:3px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}
+.learn .doing .w{font-weight:600}
+.learn .doing .zh,.learn .doing .from{color:var(--sub)}
+.ov{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.ov h3{margin:0 0 4px;font-size:13px;font-weight:500;color:var(--sub)}
+.ov .vs{font-size:13px;color:var(--sub);margin-top:2px}
+.ov .vs .up{color:var(--ok)} .ov .vs .down{color:var(--no)}
+.ov .wchips{margin:6px 0 0}
+.ov-foot{font-size:13px;color:var(--sub);margin:10px 0 0}
+details.fold{margin-top:28px}
+details.fold > summary{list-style:none;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-weight:600;font-size:15px}
+details.fold > summary::-webkit-details-marker{display:none}
+details.fold > summary::before{content:"▸";display:inline-block;margin-right:8px;color:var(--sub);transition:transform .15s}
+details.fold[open] > summary::before{transform:rotate(90deg)}
+details.fold > summary small{font-weight:400;color:var(--sub);margin-left:6px;font-size:13px}
+details.fold > section:first-of-type{margin-top:18px}
+@media (max-width:820px){.ov{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.ov{grid-template-columns:1fr}}
+.views{display:flex;gap:6px;margin:10px 0 2px}
+.views .vtab{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:7px 18px;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+.views .vtab[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+#v-pets{margin-top:12px}
+#v-pets .ptools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 10px}
+#v-pets iframe{display:block;width:100%;height:calc(100vh - 150px);min-height:520px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.petline{font-size:13px;margin:4px 0 0;color:var(--sub)}
+.petline b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<script type="application/json" id="data">{{DATA}}</script>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>背单词闯关 · 看板<span id="demo"></span></h1>
+      <div class="meta" id="meta"></div>
+      <div class="views" id="views" role="group" aria-label="看成绩还是宠物">
+        <button class="vtab" data-v="score" aria-pressed="true">成绩</button>
+        <button class="vtab" data-v="pets" aria-pressed="false">宠物</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="bar-top">
+    <div class="row" id="units" role="group" aria-label="选单元"></div>
+    <div class="row" id="clsf" role="group" aria-label="选班级"></div>
+    <div class="find">
+      <span class="ico" aria-hidden="true">⌕</span>
+      <input id="q" type="search" placeholder="搜学生名字，看这个学生每一课和没拿下的词" aria-label="搜学生名字" autocomplete="off"
+        role="combobox" aria-expanded="false" aria-controls="hits">
+      <ul class="hits" id="hits" role="listbox" hidden></ul>
+    </div>
+  </div>
+
+  <section id="s-one" hidden>
+    <div class="card one" id="one"></div>
+  </section>
+
+
+  <section id="s-all">
+    <h2>全班整体</h2>
+    <p class="lead" id="all-lead"></p>
+    <div class="ov" id="ov"></div>
+    <p class="ov-foot" id="ov-foot"></p>
+  </section>
+
+  <section id="s-hand">
+    <h2>每个班谁交了、谁没交</h2>
+    <p class="lead" id="hand-lead"></p>
+    <div class="grid3" id="hand"></div>
+    <p class="note" id="unknown"></p>
+  </section>
+
+  <section id="s-plan">
+    <h2>复习情况<span id="plan-st"></span></h2>
+    <p class="lead" id="plan-lead"></p>
+    <div class="card" id="plan"></div>
+  </section>
+
+  <section>
+    <h2>全班最没拿下的词（完整榜）</h2>
+    <p class="lead">全班第一次做时最没拿下的。「还不会」比「差一点」更靠前。</p>
+    <div class="card">
+      <div class="tools"><div class="row" id="wkind" role="group" aria-label="词还是句子题">
+        <button class="chip" data-k="word" aria-pressed="true">单词</button>
+        <button class="chip" data-k="other" aria-pressed="false">改错 · 默写 · 造句</button></div></div>
+      <div class="legend"><span><i style="background:var(--no)"></i>还不会</span><span><i style="background:var(--near)"></i>差一点</span></div>
+      <ol class="wrong" id="wrong"></ol>
+      <div class="btns">
+        <button class="btn" id="dl-csv">下载易错词榜（表格）</button>
+        <button class="btn" id="dl-md">下载易错词榜（Markdown，可存进 ima）</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section>
+    <h2>几个单元下来</h2>
+    <p class="lead">交作业率和第一次的正确率（不算造句）。点上面的班级只看那个班。</p>
+    <div class="card" style="overflow-x:auto"><table class="trend" id="trend"></table></div>
+
+    <div hidden><div class="rec" id="rec"></div><div id="notrev"></div></div>
+  </section>
+
+  <details class="fold" id="fold">
+    <summary>每个人的情况<small>系统在盯，想看再点开；找某一个人直接用上面的搜索</small></summary>
+
+    <section>
+      <h2>要你亲自看</h2>
+      <p class="lead">还不会的多、做得太快、自己说不会，或者自评会了其实不会。</p>
+      <div class="card">
+        <ul class="att" id="att"></ul>
+        <p class="note" id="compose"></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>每个学生</h2>
+      <p class="lead">看最近一次提交。四个数加起来应该正好等于题数。</p>
+      <div class="card">
+        <div id="check"></div>
+        <div class="legend"><span><i style="background:var(--ok)"></i>对了</span><span><i style="background:var(--near)"></i>差一点</span><span><i style="background:var(--no)"></i>还不会</span><span><i style="background:var(--rev)"></i>待老师看（造句）</span></div>
+        <div class="tools">
+          <select id="sort" aria-label="排序">
+            <option value="nope">还不会多的在前</option>
+            <option value="right">对了少的在前</option>
+            <option value="name">按名单顺序</option>
+            <option value="miss">没交的在前</option>
+          </select>
+          <span class="note" id="qnote" style="margin:0"></span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="st">
+            <thead><tr><th>姓名</th><th><span class="hide-m">对了 / 差一点 / 还不会 / 待老师看</span><span class="show-m">四个数</span></th><th class="hide-m">合计</th><th>第一次→<br class="show-m">最近</th><th class="hide-m">用时</th></tr></thead>
+            <tbody id="st"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <p class="note" id="chronic"></p>
+  </details>
+
+  <section>
+    <h2>以后会有</h2>
+    <div class="soon">
+      <div class="card" aria-disabled="true">
+        <h3>家长确认<span class="pill">还没上线</span></h3>
+        <p>家长看到孩子这次的结果，点一下「已看到」。现在还没有这个功能，这里没有数据。</p>
+      </div>
+      <div class="card" aria-disabled="true">
+        <h3>听写<span class="pill">还没上线</span></h3>
+        <p>学生听读音拼出单词，按对了 / 差一点 / 还不会算进上面的四个数。现在还没有这个关卡，这里没有数据。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-pets" hidden>
+    <div class="ptools">
+      <button class="btn" id="pets-full">全屏（投到大屏给学生看）</button>
+      <span class="note" id="pets-note" style="margin:0"></span>
+    </div>
+    <iframe id="pets-frame" title="宠物墙"></iframe>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const D = JSON.parse(document.getElementById("data").textContent);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const C = ["var(--ok)","var(--near)","var(--no)","var(--rev)"];
+const lab = u => u.lesson ? `第${u.lesson}课` : u.title.replace(/^Unit (\d+).*/, "Unit $1");
+const named = pid => (D.names || {})[pid] || (String(pid).startsWith("review-") ? "我的复习" : pid);
+const zhOf = w => (D.zh || {})[w] || "";
+const hasSub = u => u.classes.some(c => c.done);
+let unitIdx = (() => { for (let i = D.units.length - 1; i >= 0; i--) if (!D.units[i].hidden && hasSub(D.units[i])) return i;
+  return D.units.length - 1; })(), cls = "", sortBy = "nope", query = "", wkind = "word";
+try { const s = JSON.parse(localStorage.getItem("beike-dash") || "{}"); if (s.cls && D.classes.includes(s.cls)) cls = s.cls; if (s.sort) sortBy = s.sort; } catch(e) {}
+const keep = () => { try { localStorage.setItem("beike-dash", JSON.stringify({cls, sort: sortBy})); } catch(e) {} };
+const short = c => c.replace(/^高一/, "");
+const mmss = s => s >= 60 ? `${Math.floor(s/60)}分${String(s%60).padStart(2,"0")}秒` : `${s}秒`;
+
+function head() {
+  const m = D.meta;
+  if (m.demo) $("demo").innerHTML = '<span class="badge">演示数据 · 全是假名</span>';
+  $("meta").textContent = `${m.generated} 从飞书「${m.base_name || "成绩表"}」拉的 · ${D.meta.no_roster ? `还没有名单，交过的 ${D.roster_total} 人` : `名单 ${D.roster_total} 人`} · 只在这台电脑上，不对外`;
+  $("units").innerHTML = D.units.map((u, i) =>
+    `<button class="tab${u.hidden ? " off" : ""}" data-i="${i}" aria-pressed="${i===unitIdx}" title="${esc(u.title)}${u.hidden ? "（撤了：学生页上看不到，这里还能看）" : ""}${u.archived ? " · 收尾了" : ""}">${esc(lab(u))}${u.archived ? '<span class="ok" aria-label="收尾了">✓</span>' : ""}${u.date ? `<small>${esc(u.date.slice(5))}</small>` : ""}</button>`).join("");
+  $("clsf").innerHTML = [["", "三个班"], ...D.classes.map(c => [c, c])].map(([v, t]) =>
+    `<button class="chip" data-c="${esc(v)}" aria-pressed="${v===cls}">${esc(v ? t : (D.classes.length === 3 ? "三个班" : "全部"))}</button>`).join("");
+  $("units").onclick = e => { const b = e.target.closest(".tab"); if (b) { unitIdx = +b.dataset.i; render(); } };
+  $("clsf").onclick = e => { const b = e.target.closest(".chip"); if (b) { cls = b.dataset.c; keep(); render(); } };
+  $("sort").value = sortBy;
+  $("sort").onchange = e => { sortBy = e.target.value; keep(); students(); };
+  finder();
+  $("wkind").onclick = e => { const b = e.target.closest(".chip"); if (b) { wkind = b.dataset.k;
+    document.querySelectorAll("#wkind .chip").forEach(x => x.setAttribute("aria-pressed", x === b)); wrong(); } };
+  $("dl-csv").onclick = dlCsv;
+  $("dl-md").onclick = dlMd;
+}
+
+const U = () => D.units[unitIdx];
+const inCls = x => !cls || x.cls === cls;
+
+function hand() {
+  const u = U();
+  const all = u.classes.reduce((a, c) => [a[0] + c.done, a[1] + c.total], [0, 0]);
+  $("hand-lead").textContent = `${u.lesson ? `第${u.lesson}课 · ` : ""}${u.title}${u.date ? ` · ${u.date} 发` : ""}` +
+    (u.hidden ? " · 撤了（学生页上看不到）" : "") +
+    (D.meta.has_catalog ? (u.archived ? " · 收尾了，存档在这台电脑上" : " · 还没收尾（说「收尾」存档）") : "") +
+    (u.n ? ` · 一共 ${u.n} 题 · ` : " · ") +
+    (D.meta.no_roster ? `交了 ${all[0]} 人（还没有名单，算不出谁没交）` : `${all[1]} 人交了 ${all[0]} 人`) +
+    (u.repeaters ? ` · ${u.repeaters} 人做了不止一次` : "");
+  $("hand").innerHTML = u.classes.map(c => {
+    const pct = Math.round(100 * c.done / Math.max(1, c.total));
+    return `<div class="card cls ${cls && cls !== c.cls ? "dim" : ""}">
+      <h3><span>${esc(c.cls || "没写班级")}</span><span class="big">${c.done}<small>${D.meta.no_roster ? " 人交了" : ` / ${c.total}`}</small></span></h3>
+      ${D.meta.no_roster ? `<div class="note">没有名单，不知道谁没交。</div>` : `<div class="prog" role="img" aria-label="交了 ${pct}%"><i style="width:${pct}%"></i></div>`}
+      ${D.meta.no_roster ? "" : c.missing.length ? `<div class="names" aria-label="没交">${c.missing.map(n => `<span class="name miss">${esc(n)}</span>`).join("")}</div>
+        <div class="note" style="margin-top:6px">没交 ${c.missing.length} 人</div>` : `<div class="allin">全交了</div>`}
+    </div>`;
+  }).join("");
+  $("unknown").textContent = u.unknown.length ? `⚠️ 不在名单里的提交：${u.unknown.join("、")}（名字写错了，或者名单该更新）` : "";
+}
+
+function wrong() {
+  const u = U();
+  let list = u.wrong.filter(a => (wkind === "word") === a.is_word)
+    .map(a => ({...a, n: cls ? (a.by[cls] || 0) : a.people})).filter(a => a.n > 0);
+  if (cls) list.sort((a, b) => b.n - a.n);
+  list = list.slice(0, 12);
+  const max = Math.max(1, ...list.map(a => cls ? a.n : a.nope + a.shaky));
+  $("wrong").innerHTML = list.length ? list.map((a, i) => {
+    const bar = cls ? `<i style="width:${100*a.n/max}%;background:var(--no)"></i>`
+      : `<i style="width:${100*a.nope/max}%;background:var(--no)"></i><i style="width:${100*a.shaky/max}%;background:var(--near)"></i>`;
+    const cnt = cls ? `<b>${a.n}</b> 人` : `<b>${a.people}</b> 人 · 还不会 ${a.nope}`;
+    return `<li><span class="rk">${i+1}</span><span class="it ${a.is_word ? "" : "nonword"}">${esc(a.item)}${a.zh ? `<span class="zh">${esc(a.zh)}</span>` : ""}</span>
+      <span class="cnt">${cnt}</span><span class="hbar" aria-hidden="true">${bar}</span></li>`;
+  }).join("") : `<li class="empty">${u.students.some(s => s.done) ? "这一类全对了。" : "还没有人交。"}</li>`;
+}
+
+function attention() {
+  const u = U();
+  const list = u.attention.filter(inCls);
+  $("att").innerHTML = list.length ? list.map(a => `<li><span class="who"><small>${esc(short(a.cls))}</small>${esc(a.name)}</span>
+    <span class="why">${a.why.map(w => `<span class="${/乱点|还不会$/.test(w) && !/自己说/.test(w) ? "hot" : ""}">${esc(w)}</span>`).join("")}</span></li>`).join("")
+    : `<li class="empty">这次没有特别要看的。</li>`;
+  const c = u.students.filter(s => s.done && inCls(s) && s.counts[3] > 0).length;
+  $("compose").textContent = c ? `另外有 ${c} 人的造句等你判（每个人都有，所以不放进上面）。` : "";
+}
+
+function students() {
+  const u = U();
+  const mm = u.mismatch.filter(x => !cls || x.startsWith(cls));
+  $("check").innerHTML = mm.length
+    ? `<div class="check bad">⚠️ 有 ${mm.length} 人四个数加起来不等于 ${u.n} 题：${esc(mm.join("、"))}</div>`
+    : `<div class="check">✓ 交了的人，四个数加起来都正好是 ${u.n} 题${u.n_guessed ? "（题数是按大多数人的合计推出来的）" : ""}</div>`;
+  let list = u.students.filter(inCls).filter(s => !query || s.name.includes(query));
+  const order = new Map(u.students.map((s, i) => [s, i]));
+  const f = {
+    nope: (a, b) => (b.done - a.done) || ((b.counts?.[2] ?? 0) - (a.counts?.[2] ?? 0)) || order.get(a) - order.get(b),
+    right: (a, b) => (b.done - a.done) || ((a.counts?.[0] ?? 0) - (b.counts?.[0] ?? 0)),
+    name: (a, b) => order.get(a) - order.get(b),
+    miss: (a, b) => (a.done - b.done) || order.get(a) - order.get(b),
+  }[sortBy];
+  list.sort(f);
+  $("qnote").textContent = query ? `只显示名字里有「${query}」的 ${list.length} 人（清空上面的搜索框看全部）` : "";
+  $("st").innerHTML = list.map(s => {
+    const nm = `<td><span>${esc(s.name)}</span>${!cls ? `<span class="tag">${esc(short(s.cls))}</span>` : ""}${s.unknown ? '<span class="tag red">不在名单</span>' : ""}</td>`;
+    if (!s.done) return `<tr class="missing">${nm}<td colspan="4">没交</td></tr>`;
+    const tot = Math.max(1, s.sum);
+    const stack = s.counts.map((v, i) => v ? `<i style="width:${100*v/tot}%;background:${C[i]}">${v >= 2 ? v : ""}</i>` : "").join("");
+    const d = s.last_right - s.first_right;
+    const trend = s.tries > 1 ? `${s.first_right}→${s.last_right} <span class="${d>0?"up":d<0?"down":""}">${d>0?"↑":d<0?"↓":"→"}</span><span class="tag">${s.tries} 次</span>` : `${s.last_right}`;
+    const ok = s.sum === u.n ? "" : ` <span class="tag red">≠${u.n}</span>`;
+    return `<tr>${nm}
+      <td><div class="stack" role="img" aria-label="对了${s.counts[0]} 差一点${s.counts[1]} 还不会${s.counts[2]} 待老师看${s.counts[3]}">${stack}</div>
+        <div class="four"><b style="color:var(--ok)">${s.counts[0]}</b> / ${s.counts[1]} / <b style="color:var(--no)">${s.counts[2]}</b> / ${s.counts[3]}</div></td>
+      <td class="n hide-m">${s.sum}${ok}</td>
+      <td class="n">${trend}</td>
+      <td class="n hide-m">${mmss(s.secs)}${s.fast.length ? '<span class="tag red">偏短</span>' : ""}</td></tr>`;
+  }).join("") || `<tr><td colspan="5" class="empty">没找到。</td></tr>`;
+}
+
+// ── 搜名字：顶上的框。打字时下面的表跟着筛；选中一个人，打开他所有单元的情况。
+const people = (() => {
+  const m = new Map();
+  D.units.forEach(u => u.students.forEach(s => { const k = s.cls + "·" + s.name; if (!m.has(k)) m.set(k, {cls: s.cls, name: s.name}); }));
+  return [...m.values()];
+})();
+let hitIdx = 0, hitList = [];
+function finder() {
+  const q = $("q"), box = $("hits");
+  const close = () => { box.hidden = true; q.setAttribute("aria-expanded", "false"); };
+  const draw = () => {
+    box.innerHTML = hitList.map((p, i) => `<li role="option" data-i="${i}" aria-selected="${i===hitIdx}"><span>${esc(p.name)}</span><small>${esc(p.cls)}</small></li>`).join("")
+      || `<li class="empty" aria-disabled="true">没有叫「${esc(query)}」的学生</li>`;
+    box.hidden = false; q.setAttribute("aria-expanded", "true");
+  };
+  q.oninput = () => {
+    query = q.value.trim(); students();
+    if (!query) { close(); return; }
+    hitList = people.filter(p => p.name.includes(query) && inCls(p))
+      .sort((a, b) => (b.name.startsWith(query) - a.name.startsWith(query)) || a.name.length - b.name.length).slice(0, 8);
+    if (!hitList.length && cls) hitList = people.filter(p => p.name.includes(query)).slice(0, 8);
+    hitIdx = 0; draw();
+  };
+  q.onkeydown = e => {
+    if (box.hidden) return;
+    if (e.key === "ArrowDown") { hitIdx = Math.min(hitIdx + 1, hitList.length - 1); draw(); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { hitIdx = Math.max(hitIdx - 1, 0); draw(); e.preventDefault(); }
+    else if (e.key === "Enter" && hitList[hitIdx]) { pick(hitList[hitIdx]); e.preventDefault(); }
+    else if (e.key === "Escape") close();
+  };
+  box.onmousedown = e => { const li = e.target.closest("li[data-i]"); if (li) { e.preventDefault(); pick(hitList[+li.dataset.i]); } };
+  q.onblur = () => setTimeout(close, 120);
+  q.onfocus = () => { if (query && hitList.length) draw(); };
+  const pick = p => { close(); q.blur(); one(p); };
+}
+function one(p) {
+  const key = p.cls + "·" + p.name;
+  const rows = D.units.map(u => {
+    const s = u.students.find(x => x.cls === p.cls && x.name === p.name);
+    const a = u.attention.find(x => x.cls === p.cls && x.name === p.name);
+    const t = esc(lab(u)) + (u.hidden ? '<small style="color:var(--off);font-weight:400"> 撤了</small>' : "");
+    if (!s) return `<div class="ou"><h4>${t}<span>不在这个单元的名单里</span></h4></div>`;
+    if (!s.done) return `<div class="ou"><h4>${t}<span style="color:var(--no)">没交</span></h4></div>`;
+    const tot = Math.max(1, s.sum);
+    const stack = s.counts.map((v, i) => v ? `<i style="width:${100*v/tot}%;background:${C[i]}">${v >= 2 ? v : ""}</i>` : "").join("");
+    const d = s.last_right - s.first_right;
+    return `<div class="ou"><h4>${t}<span>${s.tries > 1 ? `做了 ${s.tries} 次，对了 ${s.first_right}→${s.last_right}${d>0?" ↑":""} · ` : ""}${mmss(s.secs)}${s.fast.length ? " · 偏短" : ""}${s.self ? ` · 自评「${esc(s.self)}」` : ""}</span></h4>
+      <div class="stack" role="img" aria-label="对了${s.counts[0]} 差一点${s.counts[1]} 还不会${s.counts[2]} 待老师看${s.counts[3]}">${stack}</div>
+      <div class="four">对了 <b style="color:var(--ok)">${s.counts[0]}</b> · 差一点 ${s.counts[1]} · 还不会 <b style="color:var(--no)">${s.counts[2]}</b> · 待老师看 ${s.counts[3]}（共 ${s.sum}${s.sum === u.n ? "" : ` ≠ ${u.n}`} 题）</div>
+      ${s.nope.length ? `<div class="wl"><b style="color:var(--no)">还不会</b>${esc(s.nope.join("、"))}</div>` : ""}
+      ${s.shaky.length ? `<div class="wl"><b style="color:var(--near)">差一点</b>${esc(s.shaky.join("、"))}</div>` : ""}
+      ${a ? `<div class="why" style="margin-top:6px">${a.why.map(w => `<span class="hot">${esc(w)}</span>`).join("")}</div>` : ""}</div>`;
+  });
+  const done = D.units.filter(u => u.students.some(x => x.cls === p.cls && x.name === p.name && x.done)).length;
+  const still = D.learn ? [] : D.recovery.filter(r => r.still.includes(key)).map(r => r.word);
+  const L = D.learn && D.learn[key], mineNext = D.plan && D.plan.per[key];
+  const learn = !D.learn ? "" : `<div class="learn"><h4>词（从第一课算到现在，连续两次第一遍就对算拿下）</h4>${!L ? `<p class="note" style="margin:0">没有错过的词，或者还没交过。</p>` : `
+      <div class="four">拿下 <b style="color:var(--ok)">${L.got.length}</b> 个 · 还在复习 <b style="color:var(--no)">${L.doing.length}</b> 个</div>
+      ${L.doing.length ? `<ul class="doing">${L.doing.slice(0, 30).map(([w, st, from]) => `<li><span class="w">${esc(w)}</span>${zhOf(w) ? `<span class="zh">${esc(zhOf(w))}</span>` : ""}<span style="color:${st === "还不会" ? "var(--no)" : "var(--near)"}">${esc(st)}</span><span class="from">错在${esc(from.map(named).join("、"))}</span></li>`).join("")}</ul>${L.doing.length > 30 ? `<p class="note" style="margin:4px 0 0">还有 ${L.doing.length - 30} 个没列出来。</p>` : ""}` : ""}
+      ${L.got.length ? `<div class="wl"><b style="color:var(--ok)">拿下了</b>${esc(L.got.join("、"))}</div>` : ""}`}
+      ${mineNext ? `<div class="wl"><b>下次「我的复习」里有</b>${esc(mineNext.join("、"))}</div>` : ""}</div>`;
+  $("one").innerHTML = `<div class="one-h"><div><h2>${esc(p.name)}<small>${esc(p.cls)}</small></h2>
+      <p class="lead" style="margin:2px 0 0">${D.units.length} ${D.meta.has_catalog ? "课" : "个单元"}交了 ${done} ${D.meta.has_catalog ? "课" : "个"}${still.length ? ` · 复习过还没拿下：${esc(still.join("、"))}` : ""}</p></div>
+      ${(() => { const q = D.pets && D.pets.by[key]; return q ? `<p class="petline">宠物：<b>${esc(q.sp)}</b> · 一共挣了 ${q.earned} 颗豆子，能花 ${q.balance} 颗${q.next ? `，再挣 ${q.next - q.earned} 颗长大` : ""}${q.own ? ` · 有 ${q.own} 件配饰` : ""}</p>` : ""; })()}
+      <button class="x" id="one-x" aria-label="关掉">×</button></div>${learn}${rows.reverse().join("")}`;
+  $("s-one").hidden = false;
+  $("one-x").onclick = () => { $("s-one").hidden = true; $("q").value = ""; query = ""; students(); $("q").focus(); };
+  $("s-one").scrollIntoView({block: "start", behavior: "smooth"});
+}
+
+function trend() {
+  const rows = D.trend.filter(inCls);
+  const mini = (v, color) => v == null ? '<span class="note">—</span>'
+    : `<span class="mini"><span class="prog"><i style="width:${v}%;background:${color}"></i></span>${v}%</span>`;
+  $("trend").innerHTML = `<thead><tr><th>班级</th>${D.units.map((u, i) => `<th${i===unitIdx?' style="color:var(--ink)"':""}>${esc(lab(u))}<br><span style="font-weight:400">交作业率 · 第一次正确率</span></th>`).join("")}</tr></thead>
+    <tbody>${rows.map(r => `<tr><td>${esc(r.cls)}</td>${r.units.map(x => `<td>${mini(x.rate, "var(--accent)")}${mini(x.right, "var(--ok)")}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  const ch = D.chronic.filter(x => !cls || x.startsWith(cls));
+  $("chronic").textContent = ch.length ? `连着两课都没交（最新这一课刚发，不算）：${ch.join("、")}` : "";
+  const rec = D.recovery;
+  $("rec").innerHTML = rec.length ? rec.map(r => {
+    const did = r.before - r.skip;
+    const pct = did ? Math.round(100 * r.got / did) : 0;
+    return `<div class="card"><h4>${esc(r.word)}<span>${esc(r.zh)}</span></h4>
+      <div class="flow">${esc(r.from.replace(/^(Unit \d+).*/, "$1"))} 第一次有 <b>${r.before}</b> 人没拿下 → ${esc(r.to.replace(/^(Unit \d+).*/, "$1"))} 复习</div>
+      <div class="prog" role="img" aria-label="复习对了 ${pct}%"><i style="width:${pct}%;background:var(--ok)"></i></div>
+      <div class="flow"><b>${r.got}</b> 人这次对了 · <b>${r.still.length}</b> 人还没拿下${r.skip ? ` · ${r.skip} 人没做` : ""}</div></div>`;
+  }).join("") : `<p class="empty">${D.meta.has_words_table ? "还没有排进复习的词。" : "词表还没进飞书，复习追踪算不了。下次「发」新单元时会自动写进去。"}</p>`;
+  $("notrev").innerHTML = D.not_reviewed.length
+    ? `<p class="note">错得多、但还没排进任何一次复习的词：${D.not_reviewed.map(x => `<b>${esc(x.word)}</b>（${esc(x.unit.replace(/^(Unit \d+).*/, "$1"))} ${x.people} 人）`).join("、")}</p>` : "";
+}
+
+function overall() {
+  const u = U(), nr = D.meta.no_roster;
+  const sub = x => (cls ? x.classes.filter(c => c.cls === cls) : x.classes).reduce((a, c) => [a[0] + c.done, a[1] + c.total], [0, 0]);
+  const rate = x => { const [d, t] = sub(x); return nr ? null : Math.round(100 * d / Math.max(1, t)); };
+  const right = x => cls ? x.class_right[cls] : x.avg_right;
+  let P = null;
+  const lesson = x => (x.kind || "课") === "课";
+  if (lesson(u)) for (let j = unitIdx - 1; j >= 0; j--) { const x = D.units[j]; if (!x.hidden && lesson(x) && sub(x)[0] > 0) { P = x; break; } }
+  const vs = (a, b) => a == null || b == null || !P ? "" : a > b ? `<span class="up">比${esc(lab(P))}高 ${a - b} 个百分点</span>`
+    : a < b ? `<span class="down">比${esc(lab(P))}低 ${b - a} 个百分点</span>` : `和${esc(lab(P))}一样`;
+  const [done, total] = sub(u), r = rate(u), ok = right(u);
+  const words = u.wrong.filter(a => a.is_word).map(a => ({...a, n: cls ? (a.by[cls] || 0) : a.people})).filter(a => a.n > 0);
+  if (cls) words.sort((a, b) => b.n - a.n);
+  words.splice(5);
+  const back = D.plan ? D.plan.back : null;
+  const who = cls ? esc(cls) : (D.classes.length === 3 ? "三个班" : "全班");
+  $("all-lead").textContent = `${lab(u)} · ${u.title}${u.date ? ` · ${u.date} 发` : ""}` + (u.hidden ? " · 撤了（学生页上看不到）" : "") +
+    (D.meta.has_catalog ? (u.archived ? " · 收尾了" : " · 还没收尾") : "") + ` · 看的是${who}` +
+    (u.per_person ? " · 期末课：只算有自己复习词的人" : "");
+  $("ov").innerHTML = `
+    <div class="card"><h3>交了多少</h3>
+      <div class="big">${done}<small>${nr ? " 人交了" : ` / ${total} 人`}</small></div>
+      ${nr ? `<div class="vs">还没有名单，算不出交了几成</div>` : `<div class="prog" role="img" aria-label="交了 ${r}%"><i style="width:${r}%"></i></div>
+      <div class="vs">${r}%${vs(r, P && rate(P)) ? " · " + vs(r, P && rate(P)) : ""}</div>`}</div>
+    <div class="card"><h3>整体对了多少</h3>
+      <div class="big">${ok == null ? "—" : ok}<small>${ok == null ? "" : "%"}</small></div>
+      ${ok == null ? `<div class="vs">还没有人交</div>` : `<div class="prog" role="img" aria-label="对了 ${ok}%"><i style="width:${ok}%;background:var(--ok)"></i></div>
+      <div class="vs">${vs(ok, P && right(P)) || (P ? "" : "这是第一课，没有上一课可比")}</div>`}</div>
+    <div class="card"><h3>全班卡在哪几个词（课上讲）</h3>
+      ${words.length ? `<div class="wchips">${words.map(a => `<span class="wchip">${esc(a.item)}<small>${a.n} 人</small></span>`).join("")}</div>`
+        : `<div class="vs">${done ? "单词都拿下了。" : "还没有人交。"}</div>`}</div>
+    <div class="card"><h3>复习拿下了多少</h3>
+      ${back != null ? `<div class="big">${back}<small> 个词</small></div>
+        <div class="vs">上一轮排进「我的复习」的词，这一轮拿下的${cls ? "（三个班一起算）" : ""}</div>`
+        : `<div class="vs">第一轮，下次收作业再看。</div>`}</div>`;
+  const c = u.students.filter(s => s.done && inCls(s) && s.counts[3] > 0).length;
+  $("ov-foot").textContent = (c ? `有 ${c} 人的造句等你看，在下面「每个人的情况」里。` : "") +
+    (u.unknown.length ? `有 ${u.unknown.length} 条提交的名字不在名单里，在下面「谁没交」那块的最后。` : "") +
+    "每个人复习什么系统自己定，不用你一个个看。";
+}
+
+function plan() {
+  const P = D.plan;
+  $("plan-st").innerHTML = "";
+  if (!P) {
+    $("plan-lead").textContent = "";
+    $("plan").innerHTML = `<p class="empty" style="margin:0">还没有复习情况。「收」作业或「看一下成绩」以后，系统会按每个人自己的记录排好「我的复习」。</p>`;
+    return;
+  }
+  if (P.state === "关掉") $("plan-st").innerHTML = `<span class="st-pill off">下次发的课不带复习</span>`;
+  $("plan-lead").textContent = `${P.says}。每个人只复习自己没拿下的词，连续两次第一遍就对就拿掉。想改全班层面的，就跟 WorkBuddy 说「devote 不用复习了」「加上 malaria」「这次不带复习」。`;
+  const mine = Object.entries(P.per).filter(([k]) => !cls || k.startsWith(cls + "·"));
+  const tot = mine.reduce((a, [, v]) => a + v.length, 0);
+  $("plan").innerHTML = `<div class="ov" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+      <div><h3>排了个人复习</h3><div class="big">${mine.length}<small> 人</small></div></div>
+      <div><h3>平均每人</h3><div class="big">${mine.length ? (tot / mine.length).toFixed(1) : 0}<small> 个词</small></div></div>
+    </div>
+    ${cls ? `<p class="plan-who">看的是 ${esc(cls)}。</p>` : ""}
+    ${P.dropped.length || P.added.length ? `<p class="plan-who">${P.dropped.length ? `全班去掉了：<b>${esc(P.dropped.join("、"))}</b>　` : ""}${P.added.length ? `加上了：<b>${esc(P.added.join("、"))}</b>（每个还没拿下的人都有）` : ""}</p>` : ""}`;
+}
+
+function view(v) {
+  const pets = v === "pets" && D.pets;
+  document.querySelectorAll("#views .vtab").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === (pets ? "pets" : "score")));
+  document.querySelectorAll(".wrap > section, .wrap > .grid2, .wrap > details").forEach(x => {
+    if (x.id === "v-pets") x.hidden = !pets; else if (x.id !== "s-one") x.style.display = pets ? "none" : "";
+  });
+  if (pets) $("s-one").hidden = true;
+  document.querySelector(".bar-top").style.display = pets ? "none" : "";
+  const f = $("pets-frame");
+  if (pets && !f.src && !f.srcdoc) { if (window.PETS_LIVE) f.src = window.PETS_LIVE; else f.srcdoc = D.pets.html; }
+  try { history.replaceState(null, "", pets ? "#宠物" : location.pathname + location.search); } catch (e) {}
+}
+function petsInit() {
+  if (!D.pets) { $("views").hidden = true; return; }
+  const P = D.pets;
+  $("pets-note").textContent = window.PETS_LIVE
+    ? `小卖部开着：学生点自己的宠物就能用豆子换配饰。点「全屏」再投屏，学生只看到宠物和豆子，看不到分数（按 Esc 退出全屏）。没人用 30 分钟自动关。`
+    : `这是宠物墙的快照，学生只看到宠物和豆子，看不到分数。小卖部现在没开，要让学生换配饰，跟 WorkBuddy 说「看一下成绩」或「开小卖部」。`;
+  $("pets-full").onclick = () => { const f = $("pets-frame"); (f.requestFullscreen || f.webkitRequestFullscreen || (() => {})).call(f); };
+  $("views").onclick = e => { const b = e.target.closest(".vtab"); if (b) view(b.dataset.v); };
+  if (decodeURIComponent(location.hash) === "#宠物") view("pets");
+}
+
+function render() {
+  document.querySelectorAll("#units .tab").forEach(b => b.setAttribute("aria-pressed", +b.dataset.i === unitIdx));
+  document.querySelectorAll("#clsf .chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.c === cls));
+  overall(); plan(); hand(); wrong(); attention(); students(); trend();
+}
+
+function save(name, text, type) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], {type}));
+  a.download = name; document.body.appendChild(a); a.click(); a.remove();
+}
+function dlCsv() {
+  const u = U();
+  const q = v => `"${String(v).replace(/"/g, '""')}"`;
+  const rows = [["排名","词/题","中文","还不会","差一点","合计人数",...D.classes]]
+    .concat(u.wrong.map((a, i) => [i+1, a.item, a.zh, a.nope, a.shaky, a.people, ...D.classes.map(c => a.by[c] || 0)]));
+  save(`易错词榜-${u.title.replace(/^(Unit \d+).*/, "$1").replace(" ", "")}-${D.meta.generated.slice(0,10)}.csv`,
+       "﻿" + rows.map(r => r.map(q).join(",")).join("\n"), "text/csv;charset=utf-8");
+}
+function dlMd() { save(`易错词榜-${D.meta.generated.slice(0,10)}.md`, D.meta.wrong_md || "", "text/markdown;charset=utf-8"); }
+
+$("foot").innerHTML = `这页是 WorkBuddy 在 ${esc(D.meta.generated)} 从飞书拉数据生成的快照，数据不会自己更新；想看最新的，跟 WorkBuddy 说「看一下成绩」。<br>
+  页面只存在这台电脑上，里面没有飞书密码或密钥，也不连任何网站。<br>
+  口径：易错词只算每个人第一次提交；每个学生的四个数看最近一次；用时偏短看每一次。${D.meta.has_units_table ? "" : "（飞书里还没有「单元」表，单元名和题数是从成绩里推的。）"}${D.meta.roster_from ? `名单来自${esc(D.meta.roster_from)}。` : ""}`;
+if (!D.units.length) {
+  // 成绩表还是空的：只留标题、「以后会有」和页脚，中间换成一句话
+  head();
+  document.querySelector(".bar-top").hidden = true;
+  document.querySelectorAll(".wrap > section, .wrap > .grid2, .wrap > details").forEach(x => {
+    if (!x.querySelector(".soon")) x.style.display = "none";
+  });
+  const p = document.createElement("section");
+  p.innerHTML = `<div class="card"><h2>成绩表里还没有提交</h2><p class="lead" style="margin:4px 0 0">学生交了作业以后，再跟 WorkBuddy 说「看一下成绩」，这里就会有每个班谁交了、谁没交、全班最没拿下的词。</p></div>`;
+  document.querySelector(".wrap header").after(p);
+} else { head(); render(); petsInit(); }
+</script>
+</body>
+</html>
