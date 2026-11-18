@@ -24,7 +24,7 @@ ROOT = HERE.parent
 SK = ROOT / "workbuddy-skill" / "scripts"
 OUT = HERE / "_live"
 sys.path.insert(0, str(SK))
-import contract, collect, deploy  # noqa: E402
+import contract, collect, lark_cli  # noqa: E402
 
 SRC_HOME = Path(os.path.expanduser(os.environ.get("BEIKE_HOME", "~/.beike")))
 U1 = ROOT / "workbuddy-skill" / "示例词表_Unit1.md"
@@ -137,7 +137,7 @@ def main():
     OUT.mkdir(exist_ok=True)
     cfg = json.loads((SRC_HOME / "config.json").read_text(encoding="utf-8"))
     os.environ.pop("LARK_CLI", None) if os.environ.get("LARK_CLI", "").endswith("readonly_lark.py") else None
-    real_cli = deploy.find_cli()
+    real_cli = lark_cli.find_cli()
 
     print("1. 老师命令（线上飞书只读）")
     scr, home = teacher_cmds("现在", SK, real_cli)

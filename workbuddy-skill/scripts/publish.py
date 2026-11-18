@@ -28,13 +28,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import roster  # noqa: E402
 
-# 模板随 skill 一起装（assets/student.html）。在开发仓库里跑时，
-# 旁边还有 04_工程/student/index.html，两份取较新的那份，改了模板不用手动同步。
-_HERE = Path(__file__).resolve().parent
-_CANDIDATES = [p for p in (_HERE.parent / "assets" / "student.html",
-                           _HERE.parents[1] / "student" / "index.html") if p.exists()]
-TPL = max(_CANDIDATES, key=lambda p: p.stat().st_mtime) if _CANDIDATES \
-    else _HERE.parent / "assets" / "student.html"
+# 学生页模板只有一份，随 skill 一起装。一课一包也用它（模板会把单课包成只有一课的「书」）。
+TPL = Path(__file__).resolve().parent.parent / "assets" / "student.html"
 START, END = "/*__PACK_START__*/", "/*__PACK_END__*/"
 FULL_EPISODES = 15      # 超过这么多课，更早的课把剧情文字去掉（题都留着），网页小一点，手机流量下也快
 from contract import WEB_TO_COLUMN as FIELD_MAP  # noqa: E402  学生页 payload() 的键 → 成绩表的列
@@ -110,9 +105,7 @@ def main():
         sys.exit(f"找不到网页模板：{tpl}")
     html = tpl.read_text(encoding="utf-8")
     if a.book and "beike-book/1" not in html:
-        # 旁边那份老模板只认一课一包；整个课目录要用 skill 自带的新模板
-        tpl = _HERE.parent / "assets" / "student.html"
-        html = tpl.read_text(encoding="utf-8")
+        sys.exit(f"这份模板不认整个课目录（--book）：{tpl}。用默认模板 {TPL}。")
     if START not in html or END not in html:
         sys.exit("模板里找不到内容包占位符，别手改模板里的 __PACK_START__ / __PACK_END__。")
 
@@ -193,8 +186,8 @@ def main():
         print("  ⚠️ 没给表单链接：学生只能复制结果码发群里，你再用 collect.py 入库。")
     if a.no_hint:
         return
-    print("\n  下一步，发布成链接（一次就够，几个班共用一个链接）：")
-    print(f"    python3 \"{Path(__file__).resolve().parent / 'deploy.py'}\" \"{out}\"")
+    print("\n  这一步只生成网页。要发给学生，用 beike.py 发：它把整个课目录生成一页，")
+    print("  写进妙搭全栈应用（config 里的 page_app），学生链接不变。")
 
 
 if __name__ == "__main__":

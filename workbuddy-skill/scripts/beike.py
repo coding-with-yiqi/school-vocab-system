@@ -31,6 +31,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import roster  # noqa: E402
+import lark_cli  # noqa: E402
 
 HOME = Path(os.path.expanduser(os.environ.get("BEIKE_HOME", "~/.beike")))
 ROSTER = HOME / "名单.txt"
@@ -68,8 +69,7 @@ from contract import SCORE_COLUMNS as FIELDS, SCORE_NUMS as NUMS, BK2_ORDER  # n
 
 
 def lark(*args, fmt="json"):
-    import deploy
-    cli = deploy.find_cli()
+    cli = lark_cli.find_cli()
     p = subprocess.run([cli, *map(str, args), "--as", "user", "--format", fmt],
                        capture_output=True, text=True)
     for raw in (p.stdout, p.stderr):
@@ -258,20 +258,19 @@ def go_live(html):
     """发到那一个固定的学生链接（链接不变）。
     config 里有 page_app（全栈应用 id）和 page_url 时：把整页 HTML 插进那个应用库里的 student_page 表，
     学生链接 page_url（…/student-api/page）读最新一行，不用重新发布应用，十几秒。
-    没有 page_app 才退回老办法 deploy.py（妙搭 html 应用：页面在 iframe 里，平台的 CSP 会拦「我的复习」和交作业）。"""
+    没配就停下来报错，不会自己去新建应用。"""
     c = cfg()
-    if c.get("page_app") and c.get("page_url"):
-        return page_to_db(Path(html), c["page_app"], c["page_url"])
-    import deploy
-    url = deploy.publish(str(html))
-    save_cfg(link=url)
-    return url
+    if not (c.get("page_app") and c.get("page_url")):
+        sys.exit("config 里没有 page_app / page_url，不知道学生页发到哪个妙搭全栈应用。\n"
+                 f"网页已经生成好了：{html}\n"
+                 "在 ~/.beike/config.json 里填上全栈应用的 app_id（page_app）和学生链接（page_url，"
+                 "…/student-api/page），再跑一次「发」。")
+    return page_to_db(Path(html), c["page_app"], c["page_url"])
 
 
 def page_to_db(html, app, url):
     """插一行 student_page，留最近 30 版。设了 BEIKE_HOME（演示 / 测试）时只写开发库，学生链接不受影响。"""
     import base64, hashlib, tempfile, urllib.request
-    import deploy
     real = HOME == Path(os.path.expanduser("~/.beike"))
     env = "online" if real else "dev"
     raw = html.read_bytes()
@@ -281,7 +280,7 @@ def page_to_db(html, app, url):
            "DELETE FROM student_page WHERE id NOT IN (SELECT id FROM student_page ORDER BY id DESC LIMIT 30);\n")
     with tempfile.TemporaryDirectory(dir=HOME) as d:      # lark-cli 的 --file 只收当前目录下的相对路径
         Path(d, "page.sql").write_text(sql, encoding="utf-8")
-        p = subprocess.run([deploy.find_cli(), "apps", "+db-execute", "--app-id", app, "--environment", env,
+        p = subprocess.run([lark_cli.find_cli(), "apps", "+db-execute", "--app-id", app, "--environment", env,
                             "--file", "page.sql", "--yes", "--as", "user"], capture_output=True, text=True, cwd=d)
     try:
         ok = json.loads(p.stdout).get("ok")

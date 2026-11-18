@@ -68,7 +68,7 @@ flowchart LR
 | `dashboard.py` / `archive.py` / `pets.py` | 看板 HTML、存档 Markdown、宠物和豆子 | 不联网；数据都由 beike.py 拉好后传进来 |
 | `review_rows.py` | 单元表、词表表的行长什么样 | 不自己调 lark-cli，由 beike.py 把 `lark` 传进来 |
 | `collect.py` / `roster.py` | 解析结果码，读名单 | 不联网 |
-| `deploy.py` | 找 lark-cli；老的「妙搭 html 应用」发布路（没配 `page_app` 时才用） | |
+| `lark_cli.py` | 找本机的 lark-cli（`LARK_CLI` 环境变量 → PATH → WorkBuddy 自带的） | 不调飞书 |
 | `feishu_pull.py` | 老的凭据直连读表路，现在不用 | |
 
 ## 目录
@@ -76,8 +76,7 @@ flowchart LR
 | 路径 | 是什么 |
 |---|---|
 | `workbuddy-skill/` | 装进老师 WorkBuddy 的技能，整个目录拷到 `~/.workbuddy/skills/beike-memory/`。`SKILL.md` 写的是老师每句话该跑哪条命令。 |
-| `workbuddy-skill/assets/student.html` | 学生端网页模板（书：多课分页 + 我的复习）。单文件，手机优先，网页里没有密钥，断网可续做。 |
-| `student/index.html` | 老的单课页模板，`publish.py <pack.json>` 单课模式还在用（见 代码审查记录.md A 条）。 |
+| `workbuddy-skill/assets/student.html` | 学生端网页模板，只有这一份（书：多课分页 + 我的复习；单课也用它）。单文件，手机优先，网页里没有密钥，断网可续做。 |
 | `oral-app/server/modules/review/` | 妙搭后端：`/student-api/page`（学生页）和 `/student-api/review`（我的复习）。 |
 | `review-api/` | 「我的复习」规则的本地版和对照测试（`rules.mjs`、`server.mjs`、`test/parity.py`）。 |
 | `packs/RJ-XB1-U1.json` | 一个完整的背课包样例（Unit 1，含剧情、5 关、20 题）。 |
@@ -128,7 +127,7 @@ pbpaste | python3 scripts/collect.py -o /tmp/成绩.csv \
 python3 scripts/build_pack.py 下个单元.md -o /tmp/pack2.json --review /tmp/错题池.json
 ```
 
-本地预览学生端：`cd student && python3 -m http.server 4178`，再打开 `http://localhost:4178/`（内嵌样例是三个班，名字都是编的）。
+本地预览学生端：`cd workbuddy-skill/assets && python3 -m http.server 4178`，再打开 `http://localhost:4178/student.html`（内嵌样例是三个班，名字都是编的）。
 
 ## 已经验过的
 
@@ -136,8 +135,8 @@ python3 scripts/build_pack.py 下个单元.md -o /tmp/pack2.json --review /tmp/�
 - **四个数互不重叠、加起来等于题数**（对了＋差一点＋还不会＋待老师看）。造句进「待老师看」，不再被算成通过。
 - 「还不会清单」和「差一点清单」分开进表，不再混成一个「未通过清单」。
 - 一个网页装几个班：下拉按班分组，学生选名字，班级跟着名字走；同名不同班不会串，刷新续做还原到对的那个人。
-- `deploy.py` 一条命令发布到飞书：自动设成互联网可读并回读确认，app_id 记在本机，再跑一次链接不变。
-- 未登录浏览器能打开，微信不拦 feishu.cn 链接。
+- `beike.py 发` 把整页插进妙搭全栈应用的 `student_page` 表，学生链接不变；config 里没配 `page_app` / `page_url` 就直接报错，不会自己新建应用。
+- 未登录浏览器能打开学生链接；微信不拦 feishu.cn 链接（测的是旧 html 应用的链接）。
 - `collect.py` 按班报谁没交，按（班级, 姓名）对。
 - 「第几次」会随提交累加，「再练一遍」不会清掉姓名、班级和已交次数。
 - 用时偏短规则触发正确（14 题 1 分钟全对 → 标「是」；9 分钟 9/14 → 空）。

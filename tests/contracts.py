@@ -6,9 +6,8 @@
 
 对的东西：
 1. contract.py 自己：表单映射的列 = 成绩表的列；结果码、数字列都是成绩表里有的列。
-2. 两份学生页模板（assets/student.html 书、student/index.html 老单课）：
-   resultCode() 的顺序 = BK2_ORDER，内置 fieldMap = WEB_TO_COLUMN，shortOf() 两份一字不差，
-   judge() 只会给出 DETAIL 里的结果。
+2. 学生页模板 assets/student.html（只有这一份）：
+   resultCode() 的顺序 = BK2_ORDER，内置 fieldMap = WEB_TO_COLUMN，judge() 只会给出 DETAIL 里的结果。
 3. 线上学生页真做一课交出来的 payload() 键 = WEB_TO_COLUMN 的键。
 4. shortOf 的标签：线上页面算出来的，和 看板假数据/真表演示/灌成绩.py 的 short_of 一样（演示数据靠它对上「我的复习」）。
 5. 明细的结果词：learning.py 和 oral-app 的 logic.ts 都认 pass / near / fail。
@@ -46,8 +45,7 @@ check(set(C.BK2_ORDER) <= set(C.SCORE_COLUMNS), "结果码的每一段都是成�
 check(C.SCORE_NUMS <= set(C.SCORE_COLUMNS), "数字列都在成绩表里")
 
 print("2. 学生页模板")
-TPLS = {"书": ROOT / "workbuddy-skill" / "assets" / "student.html", "老单课": ROOT / "student" / "index.html"}
-short = {}
+TPLS = {"assets/student.html": ROOT / "workbuddy-skill" / "assets" / "student.html"}
 for tag, p in TPLS.items():
     src = p.read_text(encoding="utf-8")
     rc = js_func(src, "resultCode")
@@ -58,8 +56,6 @@ for tag, p in TPLS.items():
     jd = js_func(src, "judge") or ""
     rs = set(re.findall(r'\br:"(\w+)"', jd)) | set(re.findall(r'v\.r="(\w+)"', src))
     check(rs and rs <= set(C.DETAIL), f"{tag}：judge() 只给出 {sorted(C.DETAIL)} 里的结果（实际 {sorted(rs)}）")
-    short[tag] = js_func(src, "shortOf")
-check(short["书"] and short["书"] == short["老单课"], "两份模板的 shortOf() 一字不差")
 
 live = ROOT / "tests" / "_live" / "学生页.json"
 if not live.exists():

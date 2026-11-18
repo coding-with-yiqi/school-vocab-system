@@ -29,7 +29,7 @@ try {
   const out = { tag: "书_线上", log };
   const VIEWS = '["v-start","v-intro","v-scene","v-level","v-done"].filter(v=>document.getElementById(v)).find(v=>!$(v).classList.contains("hide"))';
   const book = await page.evaluate(() => typeof BOOK !== "undefined");
-  out.template = book ? "书（assets/student.html）" : "老单课（student/index.html）";
+  out.template = book ? "书（assets/student.html）" : "不是书：线上页面不是 assets/student.html 生成的";
   out.items = await page.evaluate(book => {
     const r = {}, packs = book ? BOOK.packs : [PACK];
     for (const p of packs) for (const [id, it] of Object.entries(p.items || {})) r[p.packId + "/" + id] = it;
